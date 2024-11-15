@@ -1,16 +1,16 @@
-from flask import Flask, request, render_template, redirect, url_for, send_from_directory
+from flask import Flask, request, render_template, redirect, url_for, send_from_directory, flash
 import os
 
 app = Flask(__name__)
+app.secret_key = "your_secret_key"  # Required for flash messages
 UPLOAD_FOLDER = 'uploads'
+PASSWORD = "delete123"  # Replace with your desired password
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# Ensure the upload folder exists
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 @app.route('/')
 def index():
-    # List available files in the upload folder
     files = os.listdir(app.config['UPLOAD_FOLDER'])
     return render_template('index.html', files=files)
 
@@ -21,10 +21,23 @@ def upload():
 
     files = request.files.getlist('files')
     for file in files:
-        if file.filename == '':
-            continue  # Skip files with no name
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+        if file.filename:
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
+    return redirect(url_for('index'))
+
+@app.route('/delete/<filename>', methods=['POST'])
+def delete_file(filename):
+    password = request.form.get("password")
+    if password != PASSWORD:
+        flash("Incorrect password. File not deleted.")
+        return redirect(url_for('index'))
     
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+        flash(f"File '{filename}' deleted successfully.")
+    else:
+        flash("File not found.")
     return redirect(url_for('index'))
 
 @app.route('/uploads/<filename>')

@@ -90,6 +90,9 @@ input[type="file"] {
 
 .file-list li {
     margin: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .file-list li a {
@@ -106,6 +109,28 @@ input[type="file"] {
 .no-files {
     font-size: 14px;
     color: #888;
+}
+
+.delete-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.delete-button {
+    margin-top: 5px;
+    padding: 8px 16px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.delete-button:hover {
+    background-color: #a71d2a;
+    transform: scale(1.05);
 }
 
 @keyframes fadeIn {
