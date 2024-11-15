@@ -13,10 +13,11 @@
 
         <!-- Form to upload file -->
         <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
-            <label for="file" class="file-label">Choose a file to upload:</label>
-            <input type="file" name="file" id="file" required>
-            <button type="submit" class="upload-button">Upload File</button>
+            <label for="file" class="file-label">Choose files to upload:</label>
+            <input type="file" name="files" id="file" multiple required>
+            <button type="submit" class="upload-button">Upload Files</button>
         </form>
+        
 
         <h2 class="available-files-title">Available Files:</h2>
         {% if files %}
